@@ -16,8 +16,9 @@ ENV ALFRESCO_HOME=/opt/alfresco
 ENV TOMCAT_HOME=/opt/alfresco/tomcat
 ENV SOLR_HOME=/opt/solr6
 
-#Java installation
+#Packages installation
 RUN yum -y update && yum -y install java-11-openjdk-devel lsof epel-release wget openssl unzip
+RUN yum clean all
 
 #Tomcat Configuration
 RUN mkdir -p ${TOMCAT_HOME} \
@@ -34,7 +35,7 @@ RUN wget ${ALFRESCO_URL} && unzip alfresco-content*.zip && rm -f alfresco-conten
 
 #Solr
 RUN wget ${ALFRESCO_SEARCH_URL} && unzip alfresco-search*.zip \
-    && mkdir -p ${ALFRESCO_SEARCH_HOME} && mv alfresco-search*/* ${ALFRESCO_SEARCH_HOME}/ \
+    && mkdir -p ${SOLR_HOME} && mv alfresco-search*/* ${SOLR_HOME}/ \
     && rm -rf alfresco-search*
 
 #Keystore
@@ -52,8 +53,6 @@ COPY assets/solrhome/alfresco/conf/solrcore.properties ${SOLR_HOME}/solrhome/alf
 COPY assets/solrhome/archive/conf/solrcore.properties ${SOLR_HOME}/solrhome/archive/conf/
 
 # Install Modules
-COPY assets/apply_amps.sh ${ALFRESCO_HOME}/bin/
-COPY assets/alfresco-aos-module-1.1.6.amp ${ALFRESCO_HOME}/amps/
 COPY assets/apply_amps.sh ${ALFRESCO_HOME}/bin/
 RUN sh ${ALFRESCO_HOME}/bin/apply_amps.sh
 
@@ -83,6 +82,8 @@ COPY assets/server.xml ${TOMCAT_HOME}/conf/
 RUN mkdir -p ${TOMCAT_HOME}/modules/share ${TOMCAT_HOME}/modules/platform
 
 RUN chmod +x run.sh && chown -RH tomcat: ${TOMCAT_HOME} && chmod +x ${TOMCAT_HOME}/bin/*.sh 
+
+RUN cp ${SOLR_HOME}/solrhome/* ${SOLR_HOME}/
 
 #Expose ports
 EXPOSE 8080 8983 5432

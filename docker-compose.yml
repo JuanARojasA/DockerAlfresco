@@ -1,8 +1,14 @@
 version: "2"
 
+networks:
+  internal:
+    ipam:
+      config:
+        - subnet: 172.0.0.0/24
+
 services:
-  mysql:
-    image: postgres:9.3-alpine
+  postgres:
+    image: juanrojas1997/postgres:latest
     environment:
       - POSTGRES_PASSWORD=alfresco
       - POSTGRES_USER=alfresco
@@ -10,9 +16,15 @@ services:
     command: postgres -c max_connections=300 -c log_min_messages=LOG
     ports:
       - 5432:5432
+    networks:
+      internal:
+        ipv4_address: 172.0.0.2
   alfresco:
-    image: juanrojas1997/alfresco:1.0
+    image: juanrojas1997/alfresco:latest
     ports:
       - 8080:8080
       - 8983:8983
       - 3306:3306
+    networks:
+      internal:
+        ipv4_address: 172.0.0.3
