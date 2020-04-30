@@ -83,7 +83,7 @@ RUN mkdir -p ${TOMCAT_HOME}/modules/share ${TOMCAT_HOME}/modules/platform
 
 RUN chmod +x run.sh && chown -RH tomcat: ${TOMCAT_HOME} && chmod +x ${TOMCAT_HOME}/bin/*.sh 
 
-RUN cp ${SOLR_HOME}/solrhome/* ${SOLR_HOME}/
+RUN rm -f ${SOLR_HOME}/solrhome/keystore && cp -rf ${SOLR_HOME}/solrhome/* ${SOLR_HOME}/
 
 #Expose ports
 EXPOSE 8080 8983 5432

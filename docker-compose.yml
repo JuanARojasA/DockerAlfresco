@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 networks:
   internal:
@@ -9,6 +9,7 @@ networks:
 services:
   postgres:
     image: juanrojas1997/postgres:latest
+    build: .
     environment:
       - POSTGRES_PASSWORD=alfresco
       - POSTGRES_USER=alfresco
@@ -19,8 +20,14 @@ services:
     networks:
       internal:
         ipv4_address: 172.0.0.2
+    volumes:
+      - type: bind
+        source: ./volumes/data/postgres
+        target: /var/lib/postgresql/data
+
   alfresco:
     image: juanrojas1997/alfresco:latest
+    build: .
     ports:
       - 8080:8080
       - 8983:8983
@@ -28,3 +35,22 @@ services:
     networks:
       internal:
         ipv4_address: 172.0.0.3
+    volumes:
+      - type: bind 
+        source: ./volumes/data/alfresco
+        target: /opt/alfresco/alf_data
+      - type: bind
+        source: ./volume/data/tomcat
+        target: /opt/alfresco/tomcat/webapps
+      - type: bind 
+        source: ./volumes/log/tomcat
+        target: /opt/alfresco/tomcat/logs
+      - type: bind 
+        source: ./volumes/config/alfresco-global.properties
+        target: /opt/alfresco/tomcat/shared/classes/alfresco-global.properties
+      - type: bind 
+        source: ./volumes/data/solr
+        target: /opt/solr6/keystore
+      - type: bind 
+        source: ./volumes/log/solr
+        target: /opt/solr/logs
