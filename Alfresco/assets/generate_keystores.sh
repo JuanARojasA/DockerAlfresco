@@ -10,6 +10,7 @@ fi
 
 # The directory containing the alfresco keystores, as referenced by keystoreFile and truststoreFile attributes in tomcat/conf/server.xml
 ALFRESCO_KEYSTORE_HOME=$ALFRESCO_HOME/alf_data/keystore
+SOLR_KEYSTORE_HOME=/opt/solr6/keystore
 
 # Location in which new keystore files will be generated
 if [ -z "$CERTIFICATE_HOME" ]; then
@@ -18,7 +19,7 @@ if [ -z "$CERTIFICATE_HOME" ]; then
 fi
 
 # Java installation directory
-JAVA_HOME=$ALFRESCO_HOME/java
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-11.0.7.10-4.el7_8.x86_64 
 
 # The repository server certificate subject name, as specified in tomcat/conf/tomcat-users.xml with roles="repository"
 REPO_CERT_DNAME="CN=Alfresco Repository, OU=Unknown, O=Alfresco Software Ltd., L=Maidenhead, ST=UK, C=GB"
@@ -68,15 +69,7 @@ cp "$CERTIFICATE_HOME/ssl.keystore" "$ALFRESCO_KEYSTORE_HOME/ssl.keystore"
 cp "$CERTIFICATE_HOME/ssl.truststore" "$ALFRESCO_KEYSTORE_HOME/ssl.truststore"
 cp "$CERTIFICATE_HOME/browser.p12" "$ALFRESCO_KEYSTORE_HOME/browser.p12"
 
-echo " "
-echo "*******************************************"
-echo "You must copy the following files to the correct location."
-echo " "
-echo " $CERTIFICATE_HOME/ssl.repo.client.keystore"
-echo " $CERTIFICATE_HOME/ssl.repo.client.truststore"
-echo " eg. for Solr 4 the location is SOLR_HOME/workspace-SpacesStore/conf/ and SOLR_HOME/archive-SpacesStore/conf/"
-echo " "
-echo "$ALFRESCO_KEYSTORE_HOME/browser.p12 has also been generated."
-echo " "
-echo "Please ensure that you set dir.keystore=$ALFRESCO_KEYSTORE_HOME in alfresco-global.properties"
-echo "*******************************************"
+cp "$CERTIFICATE_HOME/ssl.repo.client.keystore" "$SOLR_KEYSTORE_HOME/ssl.repo.client.keystore"
+cp "$CERTIFICATE_HOME/ssl.repo.client.keystore" "$SOLR_KEYSTORE_HOME/ssl.repo.client.truststore"
+cp "$ALFRESCO_KEYSTORE_HOME/ssl-keystore-passwords.properties" "$SOLR_KEYSTORE_HOME/ssl-keystore-passwords.properties"
+cp "$ALFRESCO_KEYSTORE_HOME/ssl-truststore-passwords.properties" "$SOLR_KEYSTORE_HOME/ssl-truststore-passwords.properties"
