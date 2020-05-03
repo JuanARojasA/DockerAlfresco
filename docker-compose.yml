@@ -40,7 +40,7 @@ services:
         source: ./volumes/data/alfresco
         target: /opt/alfresco/alf_data
       - type: bind
-        source: ./volume/data/tomcat
+        source: ./volumes/data/tomcat
         target: /opt/alfresco/tomcat/webapps
       - type: bind 
         source: ./volumes/log/tomcat
