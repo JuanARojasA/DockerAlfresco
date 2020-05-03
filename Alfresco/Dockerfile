@@ -40,7 +40,7 @@ RUN wget ${ALFRESCO_SEARCH_URL} && unzip alfresco-search*.zip \
 
 #Keystore
 COPY assets/generate_keystores.sh ~/
-RUN sh ${ALFRESCO_HOME}/alf_data/keystore/generate_keystores.sh
+RUN sh generate_keystores.sh
 
 #RUN wget ${SSL_TOOL_URL} \
 #    && unzip master.zip && cd alfresco-ssl-generator-master/ssl-tool \
