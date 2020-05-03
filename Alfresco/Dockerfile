@@ -39,16 +39,13 @@ RUN wget ${ALFRESCO_SEARCH_URL} && unzip alfresco-search*.zip \
     && rm -rf alfresco-search*
 
 #Keystore
-COPY assets/generate_keystores.sh ~/
-RUN sh generate_keystores.sh
-
-#RUN wget ${SSL_TOOL_URL} \
-#    && unzip master.zip && cd alfresco-ssl-generator-master/ssl-tool \
-#    && ./run.sh && mv keystores/alfresco/* ${ALFRESCO_HOME}/alf_data/keystore/ \
-#    && mkdir ${SOLR_HOME}/keystore && mv keystores/solr/* ${SOLR_HOME}/keystore/ \
-#    && ln -s ${SOLR_HOME}/keystore ${SOLR_HOME}/solr/keystore \
-#    && ln -s ${SOLR_HOME}/keystore ${SOLR_HOME}/solrhome/keystore \
-#    && cd
+RUN wget ${SSL_TOOL_URL} \
+    && unzip master.zip && cd alfresco-ssl-generator-master/ssl-tool \
+    && ./run.sh && mv keystores/alfresco/* ${ALFRESCO_HOME}/alf_data/keystore/ \
+    && mkdir ${SOLR_HOME}/keystore && mv keystores/solr/* ${SOLR_HOME}/keystore/ \
+    && ln -s ${SOLR_HOME}/keystore ${SOLR_HOME}/solr/keystore \
+    && ln -s ${SOLR_HOME}/keystore ${SOLR_HOME}/solrhome/keystore \
+    && cd
 
 #Copy SolrCore properties SSL
 COPY assets/solrcore.properties ${SOLR_HOME}/solrhome/templates/rerank/conf/
