@@ -8,8 +8,7 @@ networks:
 
 services:
   postgres:
-    image: juanrojas1997/postgres:latest
-    build: .
+    image: postgres:11.4-alpine
     environment:
       - POSTGRES_PASSWORD=alfresco
       - POSTGRES_USER=alfresco
@@ -27,7 +26,6 @@ services:
 
   alfresco:
     image: juanrojas1997/alfresco:latest
-    build: .
     ports:
       - 8080:8080
       - 8983:8983
